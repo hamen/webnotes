@@ -23,6 +23,8 @@
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
     <link rel="stylesheet" type="text/css" href="./styles/default.css" media="screen"/>
     <script type="text/javascript" src="./scripts/main.js"></script>
+    <script type="text/javascript" src="./scripts/jquery.js"></script>
+
     <title>WebNotes</title>
   </head>
 
@@ -38,14 +40,23 @@
 	
 	<div class="content">
 	  <div class="item">
-	    Item name
-	    <input id="item_name" type="text" value="new item" />
-	    <input type="button" value="Save" onclick="writeLocal();" />
-	    <input id="deleteButton" type="button" value="Delete" onclick="deleteLocal();" disabled="true"/>
+	    <form>
+	      <input id="item_name" type="text" value="Put a name here"/>
+	      <input type="button" value="Save" onclick="writeLocal();" />
+	      <input id="deleteButton" type="button" value="Delete"
+		     onclick="deleteLocal();" disabled="true"/>
+	    </form>
+	    <script>
+	      $('#item_name').keypress(function(event) {
+	      if (event.keyCode == '13') {
+	      writeLocal();
+	      }
+	      });
+	    </script>
 	    <script>
 	      window.onload = function() {
 	      updateItemsList();
-	      $('text').value=[
+	      _('text').value=[
 	      '1) Write some text',
 	      '2) Give it some name',
 	      '3) Click Save button'].join('\n');
