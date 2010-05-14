@@ -24,8 +24,9 @@
     <link rel="stylesheet" type="text/css" href="./styles/default.css" media="screen"/>
     <script type="text/javascript" src="./scripts/main.js"></script>
     <script type="text/javascript" src="./scripts/jquery.js"></script>
+    <script type="text/javascript" src="./scripts/jquery.elastic.js"></script>
 
-    <title>WebNotes</title>
+    <title>WebNotes (beta - Use it for testing only)</title>
   </head>
 
   <body>
@@ -49,35 +50,36 @@
 		Please enable JavaScript for full functionality.
 	      </p>
 	    </noscript>
+	    <div id="items"></div>
 	    <form>
+	      <h2>Add note</h2>
 	      <input id="item_name" type="text" value="Put a name here"/>
-	      <input type="button" value="Save" onclick="writeLocal();" />
-	      <input id="deleteButton" type="button" value="Delete"
-		     onclick="deleteLocal();" disabled="true"/>
 	    </form>
-	    <script>
-	      $('#item_name').keypress(function(event) {
-	      if (event.keyCode == '13') {
-	      writeLocal();
-	      }
-	      });
-	      $('#item_name').focus(function() {
-              $(this).attr("value","");
-              });
-	    </script>
 	    <script>
 	      window.onload = function() {
 	      updateItemsList();
-	      _('text').value=[
-	      '1) Write some text',
-	      '2) Give it some name',
-	      '3) Click Save button'].join('\n');
+	      resetFields();
 	      }
 	    </script>
-	    <textarea id="text" class="text">
-	    </textarea>
-	    
-	    <div id="items"></div>
+	    <script>
+	      $(document).ready(function() {
+              $('#noteText').hide();
+	      });
+	    </script>
+	    <div id="noteText">
+	      <textarea id="text" class="text">
+	      </textarea>
+	      <input id="deleteButton"
+		     type="button"
+		     value="Delete"
+		     onclick="deleteLocal();"
+		     disabled="true"
+		     style="float:right"/>
+	      <input type="button"
+		     value="Save"
+		     onclick="writeLocal();"
+		     style="float:right"/>
+	    </div>
 	    <a href="javascript:location.reload(true)">Refresh this page</a>
 	  </div>
 	</div>
@@ -101,6 +103,24 @@
       </div>
 
     </div>
-
+    <script>
+      $('#item_name').keypress(function(event) {
+      if (event.keyCode == '13') {
+      writeLocal();
+      }
+      });
+      $('#item_name').focus(function() {
+      if ($(this).attr("value") == "Put a name here") {
+      $(this).attr("value","");
+      $('#noteText').show('slow');
+      }
+      });
+      $('#text').focus(function() {
+      if ($(this).attr("value") == "Write some text") {
+      $(this).attr("value","");
+      }
+      });
+      
+    </script>
 </body>
 </html>

@@ -25,20 +25,22 @@ var host = location.hostname;
 var myLocalStorage = localStorage; // firefox 3.5+
 
 function writeLocal() {
-  var data = _('text').value;
-  var itemName = _('item_name').value;
-  myLocalStorage.setItem(itemName, data);
-  updateItemsList();
+    var data = _('text').value;
+    var itemName = _('item_name').value;
+    myLocalStorage.setItem(itemName, data);
+    updateItemsList();
+    resetFields();
 }
 
 function deleteLocal() {
     var itemName = _('item_name').value;
     myLocalStorage.removeItem(itemName);
     updateItemsList();
-    location.reload(true);
+    resetFields();
 }
 
 function readLocal(itemName) {
+    $('#noteText').show('slow');
     _('deleteButton').disabled=false;
     _('item_name').value=itemName;
     _('text').value=myLocalStorage.getItem(itemName);
@@ -46,14 +48,21 @@ function readLocal(itemName) {
 
 function updateItemsList() {
   var items = myLocalStorage.length;
-  // list items
-  var s = '<h2>Stored items:</h2>';
-  s+= '<ul>';
-  for (var i=0; i < items; i++) {
-    var itemName = myLocalStorage.key(i);
-    s+= '<li>'+
-	  '<span onclick="readLocal(\''+itemName+'\');" title="Click to load"><strong>'+itemName+'</strong></span>'+ 
-          '</li>';
+    if (items > 0) {
+	// list items
+	var s = '<h2>Stored items:</h2>';
+	s+= '<ul>';
+	for (var i=0; i < items; i++) {
+	    var itemName = myLocalStorage.key(i);
+	    s+= '<li>'+
+		'<span class=\"item_li\" onclick="readLocal(\''+itemName+'\');" title="Click to load"><strong>'+itemName+'</strong></span></li>';
   }
-  _('items').innerHTML = s+'</ul>';
+	_('items').innerHTML = s+'</ul>';	
+    }
+}
+
+function resetFields(){
+    $('#noteText').hide();
+    $('#item_name').attr("value","Put a name here");
+    $('#text').attr("value","Write some text");
 }
