@@ -40,6 +40,7 @@ function deleteLocal() {
 }
 
 function readLocal(itemName) {
+    _('note_h').firstChild.nodeValue="Edit note";
     $('#noteText').show('slow');
     _('deleteButton').disabled=false;
     _('item_name').value=itemName;
@@ -62,6 +63,7 @@ function updateItemsList() {
 }
 
 function resetFields(){
+    _('note_h').firstChild.nodeValue="Add note";
     $('#noteText').hide();
     $('#item_name').attr("value","Put a name here");
     $('#text').attr("value","Write some text");
