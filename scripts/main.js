@@ -20,14 +20,30 @@ function _(id) {
     return document.getElementById(id);
 }
 
+Storage.prototype.setObject = function(key, value) {
+    this.setItem(key, JSON.stringify(value));
+};
+ 
+Storage.prototype.getObject = function(key) {
+    return JSON.parse(this.getItem(key));
+};
+
 var host = location.hostname;
 //var myLocalStorage = globalStorage[host]; // firefox 3+
 var myLocalStorage = localStorage; // firefox 3.5+
 
 function writeLocal() {
-    var data = _('text').value;
-    var itemName = _('item_name').value;
-    myLocalStorage.setItem(itemName, data);
+    var note = { name: _('item_name').value,
+		 data : _('text').value,
+		 tag: 'normal'
+	       };
+    
+    // Ctrl+return raises a fake writeLocal,
+    // saving a note with default name and data
+    if (note.name === "Put a name here") {
+	return;
+    }
+    myLocalStorage.setObject(note.name, note);
     updateItemsList();
     resetFields();
 }
@@ -37,6 +53,9 @@ function deleteLocal() {
     myLocalStorage.removeItem(itemName);
     updateItemsList();
     resetFields();
+    if ( myLocalStorage.length === 0){
+	location.reload();
+    }
 }
 
 function readLocal(itemName) {
@@ -44,20 +63,33 @@ function readLocal(itemName) {
     $('#noteText').show('slow');
     _('deleteButton').disabled=false;
     _('item_name').value=itemName;
-    _('text').value=myLocalStorage.getItem(itemName);
+    _('text').value=myLocalStorage.getObject(itemName).data;
 }
 
 function updateItemsList() {
-  var items = myLocalStorage.length;
+    var items = myLocalStorage.length;
+    var notesArray = [];
     if (items > 0) {
+	// Create a sorted array from unsorted myLocalStorage items
+	for (var i=0; i < items; i++) {
+	    var itemName = myLocalStorage.key(i);
+	    var note = myLocalStorage.getObject(itemName);
+	    notesArray.push(note);
+	}
+	notesArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
+
 	// list items
 	var s = '<h2>Stored items:</h2>';
 	s+= '<ul>';
-	for (var i=0; i < items; i++) {
-	    var itemName = myLocalStorage.key(i);
+	for (i = 0; i < notesArray.length; i++) {
+	    var note = myLocalStorage.getObject(notesArray[i].name);
+	    var tag = 'item_li_' + note.tag;
+	    
 	    s+= '<li id="note_'+ i + '">'+
-		'<span class=\"item_li\" onclick="readLocal(\''+itemName+'\');" title="Click to load"><strong>'+itemName+'</strong></span></li>';
-  }
+		'<span onclick="readLocal(\''+note.name+'\');"' +
+		'title="Click to load" class="' +
+		tag + '"><strong>'+note.name+'</strong></span></li>';
+	}
 	_('items').innerHTML = s+'</ul>';	
     }
 }
@@ -85,4 +117,24 @@ function deleteWarning(){
 	    $('#noteText').hide();
 	}
     }
+}
+
+function sort_by(field, reverse, primer){
+	
+	reverse = (reverse) ? -1 : 1;
+	
+	return function(a,b){
+	    
+	    a = a[field];
+	    b = b[field];
+	    
+	    if (typeof(primer) != 'undefined'){
+		a = primer(a);
+		b = primer(b);
+	    }
+	    
+	    if (a<b) return reverse * -1;
+	    if (a>b) return reverse * 1;
+	    return 0;
+	};
 }
