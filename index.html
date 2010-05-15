@@ -86,24 +86,27 @@
 	      enableCommands();
 	      }
 	    </script>
-	    <script>
-	      $(document).ready(function() {
-              $('#noteText').hide();
-	      });
-	    </script>
 	    <div id="noteText">
 	      <textarea id="text" class="text">
 	      </textarea>
+	      <div class="sidenav">
+		<h1>Tag as</h1>
+		<ul>
+		  <li>i - important</li>
+		  <li>n - normal</li>
+		  <li>l - later</li>
+		</ul>
+	      </div>
 	      <input id="deleteButton"
 		     type="button"
 		     value="Delete"
 		     onclick="deleteLocal();"
 		     disabled="true"
-		     style="float:right"/>
+		     />
 	      <input type="button"
 		     value="Save"
 		     onclick="writeLocal();"
-		     style="float:right"/>
+		     />
 	    </div>
 	  </div>
 	</div>
@@ -146,7 +149,7 @@
       $(this).attr("value","");
       }
       });
-      
+      $('#noteText').hide();
       $('#text').elastic();
       });
     </script>

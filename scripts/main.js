@@ -73,8 +73,16 @@ function updateItemsList() {
 	// Create a sorted array from unsorted myLocalStorage items
 	for (var i=0; i < items; i++) {
 	    var itemName = myLocalStorage.key(i);
-	    var note = myLocalStorage.getObject(itemName);
-	    notesArray.push(note);
+	    try {
+		var note = myLocalStorage.getObject(itemName);
+		notesArray.push(note);
+	    } catch (x) {
+		if(x.message === "JSON parse"){
+		    myLocalStorage.clear();
+		}
+		    
+	    }
+	    
 	}
 	notesArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
 
@@ -85,8 +93,8 @@ function updateItemsList() {
 	    var note = myLocalStorage.getObject(notesArray[i].name);
 	    var tag = 'item_li_' + note.tag;
 	    
-	    s+= '<li id="note_'+ i + '">'+
-		'<span onclick="readLocal(\''+note.name+'\');"' +
+	    s+= '<li id="note_'+ i + '" onclick="readLocal(\''+note.name+'\');"onclick="readLocal(\''+note.name+'\');">'+
+		'<span' +
 		'title="Click to load" class="' +
 		tag + '"><strong>'+note.name+'</strong></span></li>';
 	}
