@@ -74,18 +74,11 @@
 		</li>
 	      </ul>
 	    </div>
-	    <div id="items"></div>
+	    <div id="items" class="items_list"></div>
 	    <form>
 	      <h2 id='note_h'>Add note</h2>
 	      <input id="item_name" type="text" value="Put a name here"/>
 	    </form>
-	    <script>
-	      window.onload = function() {
-	      updateItemsList();
-	      resetFields();
-	      enableCommands();
-	      }
-	    </script>
 	    <div id="noteText">
 	      <textarea id="text" class="text">
 	      </textarea>
@@ -130,6 +123,14 @@
       </div>
       
     </div>
+    <script>
+      window.onload = function() {
+      updateItemsList();
+      resetFields();
+      enableCommands();
+      }
+    </script>
+    </script>
     <script>
       $(document).ready(function() {
 

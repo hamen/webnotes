@@ -242,3 +242,6 @@ form {
 .deleteButton {
     left: 20px;
 }
+.items_list {
+    min-height: 100px;
+    }

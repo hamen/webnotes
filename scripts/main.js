@@ -87,7 +87,7 @@ function updateItemsList() {
 	notesArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
 
 	// list items
-	var s = '<h2>Stored items:</h2>';
+	var s = '<h2>Stored items</h2>';
 	s+= '<ul>';
 	for (i = 0; i < notesArray.length; i++) {
 	    var note = myLocalStorage.getObject(notesArray[i].name);
@@ -99,6 +99,9 @@ function updateItemsList() {
 		tag + '"><strong>'+note.name+'</strong></span></li>';
 	}
 	_('items').innerHTML = s+'</ul>';	
+    }
+    else {
+	_('items').innerHTML = '<h2>Stored items</h2><p>There is no note</p>';
     }
 }
 
