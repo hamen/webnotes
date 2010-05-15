@@ -55,7 +55,7 @@ function updateItemsList() {
 	s+= '<ul>';
 	for (var i=0; i < items; i++) {
 	    var itemName = myLocalStorage.key(i);
-	    s+= '<li>'+
+	    s+= '<li id="note_'+ i + '">'+
 		'<span class=\"item_li\" onclick="readLocal(\''+itemName+'\');" title="Click to load"><strong>'+itemName+'</strong></span></li>';
   }
 	_('items').innerHTML = s+'</ul>';	
@@ -67,4 +67,22 @@ function resetFields(){
     $('#noteText').hide();
     $('#item_name').attr("value","Put a name here");
     $('#text').attr("value","Write some text");
+}
+
+function showTextarea(){
+    $('#noteText').show('slow');
+}
+
+function deleteWarning(){
+    if ($('#noteText').is(':visible')){
+	var item_name = _('item_name').value;
+	var answer = confirm('Delete note: ' + item_name);
+	
+	if(answer) {
+	    deleteLocal();
+	}
+	else {
+	    $('#noteText').hide();
+	}
+    }
 }

@@ -22,9 +22,16 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
     <link rel="stylesheet" type="text/css" href="./styles/default.css" media="screen"/>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
+	  rel="stylesheet" type="text/css"/> 
     <script type="text/javascript" src="./scripts/main.js"></script>
+    <script type="text/javascript" src="./scripts/commands.js"></script>
     <script type="text/javascript" src="./scripts/jquery.js"></script>
     <script type="text/javascript" src="./scripts/jquery.elastic.js"></script>
+    <script type="text/javascript"
+	    src="./scripts/jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="./scripts/jquery-ui.js"></script>
+
 
     <title>WebNotes (beta - Use it for testing only)</title>
   </head>
@@ -50,6 +57,20 @@
 		Please enable JavaScript for full functionality.
 	      </p>
 	    </noscript>
+	    <div class="sidenav">
+	      <h1>Actions keys</h1>
+	      <ul>
+		<li>
+		  a - Add note
+		</li>
+		<li>
+		  d - Delete note
+		</li>
+		<li>
+		  r - Reset fields
+		</li>
+	      </ul>
+	    </div>
 	    <div id="items"></div>
 	    <form>
 	      <h2 id='note_h'>Add note</h2>
@@ -59,6 +80,7 @@
 	      window.onload = function() {
 	      updateItemsList();
 	      resetFields();
+	      enableCommands();
 	      }
 	    </script>
 	    <script>
@@ -80,7 +102,6 @@
 		     onclick="writeLocal();"
 		     style="float:right"/>
 	    </div>
-	    <a href="javascript:location.reload(true)">Refresh this page</a>
 	  </div>
 	</div>
 	<div class="clearer"><span></span></div>
@@ -101,9 +122,11 @@
 	</a>
 	</div>
       </div>
-
+      
     </div>
     <script>
+      $(document).ready(function() {
+
       $('#item_name').keypress(function(event) {
       if (event.keyCode == '13') {
       writeLocal();
@@ -112,7 +135,7 @@
       $('#item_name').focus(function() {
       if ($(this).attr("value") == "Put a name here") {
       $(this).attr("value","");
-      $('#noteText').show('slow');
+      showTextarea();
       }
       });
       $('#text').focus(function() {
@@ -122,6 +145,7 @@
       });
       
       $('#text').elastic();
+      });
     </script>
 </body>
 </html>

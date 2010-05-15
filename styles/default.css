@@ -48,11 +48,16 @@ cite {
 	font: normal 1.3em "Lucida Sans Unicode",serif;
 	padding-left: 28px;
 }
-h1,h2,h3 {
+h1,h3 {
 	color: #367EA6;
 	padding-top: 6px;
 }
-
+h2 {
+    color: #367EA6;
+    padding-top: 6px;
+    border-top: 2px solid #1B8FA9;
+    width: 400px;
+}
 /* misc */
 .clearer {
 	clear: both;
@@ -107,13 +112,13 @@ h1,h2,h3 {
 
 /* main left */
 .sidenav h1,.sidenav ul {
-	padding-left: 12px;
+    padding-left: 12px;
 }
 .sidenav {
-	background: #EEE;
-	border: 1px solid #E5E5E5;
-	float: left;
-	width: 200px;
+    background: #EEE;
+    border: 1px solid #E5E5E5;
+    float: right;
+    width: 200px;
 }
 .sidenav h1 {
 	color: #666;
@@ -122,16 +127,18 @@ h1,h2,h3 {
 	margin-top: 1.2em;
 }
 .sidenav ul {
-	border-top: 1px solid #FAFAFA;
-	background: url(../img/bgul.gif) repeat-x;
-	margin: 0;
-	padding: 0;
+    border-top: 1px solid #FAFAFA;
+    background: url(../img/bgul.gif) repeat-x;
+    margin: 0;
+    padding: 0;
+    width: auto;
 }
 .sidenav li {
-	border: 1px solid #FAFAFA;
-	border-top: none;
-	list-style: none;
-	margin: 0;
+    border: 1px solid #FAFAFA;
+    border-top: none;
+    list-style: none;
+    margin: 0;
+    width: auto;
 }
 .sidenav li a {
 	color: #777;
@@ -164,13 +171,12 @@ h1,h2,h3 {
     margin-left: 18px;
     padding: 4px;
     padding-bottom: 4px;
-    width: 400px;
+    width: auto;
 }
 .content ul {
     padding-right: 4px;
     padding-bottom: 10px;
-    border-bottom: 2px solid #000;
-    width: 400px;
+    width: auto;
 }
 /* search form */
 form {
