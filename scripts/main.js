@@ -32,11 +32,14 @@ var host = location.hostname;
 //var myLocalStorage = globalStorage[host]; // firefox 3+
 var myLocalStorage = localStorage; // firefox 3.5+
 
-function writeLocal() {
+function writeLocal(tag) {
     var note = { name: _('item_name').value,
 		 data : _('text').value,
 		 tag: 'normal'
 	       };
+    if(tag){
+	note.tag = tag;
+    }
     
     // Ctrl+return raises a fake writeLocal,
     // saving a note with default name and data
@@ -148,4 +151,8 @@ function sort_by(field, reverse, primer){
 	    if (a>b) return reverse * 1;
 	    return 0;
 	};
+}
+
+function setTag(tag) {
+    writeLocal(tag);
 }
