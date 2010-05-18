@@ -17,6 +17,7 @@ body {
     color: #444;
     font: normal 62.5% "Lucida Sans Unicode",sans-serif;
     margin: 0;
+    height:100%;
 }
 input {
     color: #555;
@@ -29,24 +30,6 @@ p,cite,code,ul {
 h1 {
     font-size: 1.4em;
     margin-bottom: 4px;
-}
-code {
-    background: url(../img/bgcode.gif);
-    border: 1px solid #F0F0F0;
-    border-left: 6px solid #39F;
-    color: #555;
-    display: block;
-    font: normal 1.1em "Lucida Sans Unicode",serif;
-    margin-bottom: 12px;
-    padding: 8px 10px;
-    white-space: pre;
-}
-cite {
-    background: url(../img/quote.gif) no-repeat;
-    color: #666;
-    display: block;
-    font: normal 1.3em "Lucida Sans Unicode",serif;
-    padding-left: 28px;
 }
 h1,h3 {
     color: #367EA6;
@@ -165,7 +148,8 @@ h2 {
 .content {
     float: right;
     width: 100%;
-    height: 500px;
+    height:auto;
+    min-height: 500px;
 }
 .content .item {
     padding: 6px 12px;
@@ -237,6 +221,9 @@ form {
     font-size:14pt;
 }
 
+.item_li {
+    font-weight: bolder;
+}
 .item_li:hover {
     text-decoration: underline;
 }
