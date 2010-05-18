@@ -1,9 +1,11 @@
 function enableCommands() {
-    $(document).bind('keydown', {combi: 'a', disableInInput: true}, showTextarea);    
-    $(document).bind('keydown', {combi: 'r', disableInInput: true}, resetFields);    
-    $(document).bind('keydown', {combi: 'd', disableInInput: true}, deleteWarning);    
-    $(document).bind('keydown', {combi: 'ctrl+return', disableInInput: false}, writeLocal);    
-    $(document).bind('keydown', {combi: 'i', disableInInput: true}, function(){setTag("important");});    
-    $(document).bind('keydown', {combi: 'n', disableInInput: true}, function(){setTag("normal");});    
-    $(document).bind('keydown', {combi: 'l', disableInInput: true}, function(){setTag("later");});    
+    // Action keys
+    $(document).bind('keystrokes', {keys: ['a']}, showTextarea);
+    $(document).bind('keystrokes', {keys: ['d']}, deleteWarning);
+    $(document).bind('keystrokes', {keys: ['e']}, exportAll);
+    $(document).bind('keystrokes', {keys: ['r']}, resetFields);
+    // Tags
+    $(document).bind('keystrokes', {keys: ['i']}, function(){setTag("important");});
+    $(document).bind('keystrokes', {keys: ['n']}, function(){setTag("normal");});
+    $(document).bind('keystrokes', {keys: ['l']}, function(){setTag("later");});
 }

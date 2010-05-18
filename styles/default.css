@@ -141,12 +141,22 @@ h2 {
     width: auto;
 }
 .sidenav li a {
+    border: none;
+    list-style: none;
+    margin: 0;
+    width: auto;
+    text-decoration: none;
+    padding: 0px 50px 0px 0px;
+}
+/*
+.sidenav li a {
     color: #777;
     display: block;
     font-size: 0.9em;
     padding: 3px 6px 3px 14px;
     text-decoration: none;
 }
+*/
 .sidenav li a:hover {
     color: #111;
 }
@@ -243,5 +253,6 @@ form {
     left: 20px;
 }
 .items_list {
-    min-height: 100px;
-    }
+    min-height: 150px;
+}
+

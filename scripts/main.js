@@ -62,11 +62,15 @@ function deleteLocal() {
 }
 
 function readLocal(itemName) {
+    var note = myLocalStorage.getObject(itemName);
     _('note_h').firstChild.nodeValue="Edit note";
     $('#noteText').show('slow');
     _('deleteButton').disabled=false;
-    _('item_name').value=itemName;
-    _('text').value=myLocalStorage.getObject(itemName).data;
+    _('item_name').value=note.name;
+    _('text').value=note.data;
+    
+    var encodedData = window.btoa(JSON.stringify(note));
+    _('export').innerHTML = '<a href=\"data:text/html;base64,' + encodedData + '>Export note</a>';
 }
 
 function updateItemsList() {
@@ -90,7 +94,7 @@ function updateItemsList() {
 	notesArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
 
 	// list items
-	var s = '<h2>Stored items</h2>';
+	var s = '<h2>Stored notes</h2>';
 	s+= '<ul>';
 	for (i = 0; i < notesArray.length; i++) {
 	    var note = myLocalStorage.getObject(notesArray[i].name);
@@ -155,4 +159,56 @@ function sort_by(field, reverse, primer){
 
 function setTag(tag) {
     writeLocal(tag);
+}
+
+function getExportURI() {
+    var items = myLocalStorage.length;
+    var notesArray = [];
+    var encodedData;
+    if (items > 0) {
+	for (var i=0; i < items; i++) {
+	    var itemName = myLocalStorage.key(i);
+	    try {
+		var note = myLocalStorage.getObject(itemName);
+		notesArray.push(note);
+	    } catch (x) {
+		if(x.message === "JSON parse"){
+		    myLocalStorage.clear();
+		}
+	    }
+	}
+	encodedData = window.btoa(JSON.stringify(notesArray));
+	return '<a href=\"data:text;base64,' + encodedData + '>Export all notes</a>';
+    }
+}
+
+function exportAll(){
+    var exportURI = getExportURI();
+
+    var $dialog = $('<div></div>')
+	.html('Click the link below and save the opening page.<br/>' + exportURI)
+	.dialog({
+		    autoOpen: false,
+		    title: 'Export notes'
+		});
+
+    $dialog.dialog('open');
+
+}
+
+function handleFiles(files) {
+    // Read a file containing JSON notes from user hd
+    var fileText;
+    for (var i = 0; i < files.length; i++) {
+	var file = files[i];
+	var reader = new FileReader();
+	fileText = file.getAsBinary();
+    }
+    var notesArray = JSON.parse(fileText);
+
+    // Save every imported notes to localStorage 
+    notesArray.forEach(function(item) {
+			   myLocalStorage.setObject(item.name, item);
+		       });
+    location.reload(true);
 }

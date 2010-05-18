@@ -23,16 +23,15 @@
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
     <link rel="stylesheet" type="text/css" href="./styles/default.css" media="screen"/>
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"
-	  rel="stylesheet" type="text/css"/> 
+	  rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="./scripts/main.js"></script>
     <script type="text/javascript" src="./scripts/commands.js"></script>
     <script type="text/javascript" src="./scripts/jquery.js"></script>
     <script type="text/javascript" src="./scripts/jquery.elastic.js"></script>
-    <script type="text/javascript"
-	    src="./scripts/jquery.hotkeys.js"></script>
     <script type="text/javascript" src="./scripts/jquery-ui.js"></script>
-
-
+    <script type="text/javascript" src="./scripts/jquery.keystrokes.min.js"></script>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    
     <title>WebNotes (beta - Use it for testing only)</title>
   </head>
 
@@ -66,11 +65,11 @@
 		<li onclick="deleteWarning();">
 		  d - Delete note
 		</li>
-		<li onclick="writeLocal();">
-		  Ctrl+return - Save note
-		</li>
 		<li onclick="resetFields();">
 		  r - Reset fields
+		</li>
+		<li onclick="exportAll();">
+		  e - Export all notes
 		</li>
 	      </ul>
 	    </div>
@@ -100,7 +99,15 @@
 		     value="Save"
 		     onclick="writeLocal();"
 		     />
+	      <div id="export" style="padding: 2px 2px 2px 2px">
+	      </div>
 	    </div>
+	        <div>
+		<form>
+		  <h2 id='importNote'>Import note</h2>
+		  <input type="file" id="input" onchange="handleFiles(this.files)" />
+		</form>
+		</div>
 	  </div>
 	</div>
 	<div class="clearer"><span></span></div>
