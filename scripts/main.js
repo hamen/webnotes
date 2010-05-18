@@ -70,7 +70,7 @@ function readLocal(itemName) {
     _('text').value=note.data;
     
     var encodedData = window.btoa(JSON.stringify(note));
-    _('export').innerHTML = '<a href=\"data:text/html;base64,' + encodedData + '>Export note</a>';
+    _('export').innerHTML = '<a href=\"data:text;base64,' + encodedData + '>Export note</a>';
 }
 
 function updateItemsList() {
