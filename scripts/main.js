@@ -33,6 +33,18 @@ var host = location.hostname;
 var myLocalStorage = localStorage; // firefox 3.5+
 
 function writeLocal(tag) {
+    var illegalChars = /\W/; // allow letters, numbers, and underscores
+    if (illegalChars.test(_('item_name').value)){
+	var $dialog = $('<div></div>')
+	    .html('Note title can only contain letters, numbers and underscores.<br/> Don\'t use esoteric characters, please ')
+	    .dialog({
+			autoOpen: false,
+			title: 'Bad characters'
+		    });
+	
+	$dialog.dialog('open');
+	return;
+    }
     var note = { name: _('item_name').value,
 		 data : _('text').value,
 		 tag: 'normal'
@@ -62,13 +74,15 @@ function deleteLocal() {
 }
 
 function readLocal(itemName) {
-    var note = myLocalStorage.getObject(itemName);
+    var noteName = document.getElementById(itemName).innerHTML;
+
+    var note = myLocalStorage.getObject(noteName);
     _('note_h').firstChild.nodeValue="Edit note";
     $('#noteText').show('slow');
     _('deleteButton').disabled=false;
     _('item_name').value=note.name;
     _('text').value=note.data;
-    
+        
     var encodedData = window.btoa(JSON.stringify(note));
     _('export').innerHTML = '<a href=\"data:text;base64,' + encodedData + '>Export note</a>';
 }
@@ -99,11 +113,10 @@ function updateItemsList() {
 	for (i = 0; i < notesArray.length; i++) {
 	    var note = myLocalStorage.getObject(notesArray[i].name);
 	    var tag = 'item_li_' + note.tag;
-	    
-	    s+= '<li id="note_'+ i + '" onclick="readLocal(\''+note.name+'\');"onclick="readLocal(\''+note.name+'\');">'+
-		'<span' +
-		'title="Click to load" class="' +
-		tag + '"><strong>'+note.name+'</strong></span></li>';
+
+	    s+= '<li class="item_li" onclick="readLocal(\'note_'+ i + '\');" >'+
+		'<span id="note_'+ i + '" title="Click to load" class="' +
+		tag + '">'+note.name+'</span></li>';
 	}
 	_('items').innerHTML = s+'</ul>';	
     }
