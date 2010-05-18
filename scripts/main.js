@@ -206,9 +206,14 @@ function handleFiles(files) {
     }
     var notesArray = JSON.parse(fileText);
 
-    // Save every imported notes to localStorage 
+    // Save every imported notes to localStorage
+    if (notesArray.length > 0) {
     notesArray.forEach(function(item) {
 			   myLocalStorage.setObject(item.name, item);
 		       });
+    }
+    else {
+	myLocalStorage.setObject(notesArray.name, notesArray);
+    }
     location.reload(true);
 }
