@@ -45,18 +45,28 @@ function writeLocal(tag) {
 	$dialog.dialog('open');
 	return;
     }
+
+    // Allow only date as yyyy-mm-dd
+    var illegalDate = /^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/;
+    if (!illegalDate.test(_('datepicker').value)){
+	var $dialog = $('<div></div>')
+	    .html('Date must be yyyy-mm-dd.<br/> Don\'t use esoteric characters, please ')
+	    .dialog({
+			autoOpen: false,
+			title: 'Bad data'
+		    });
+	
+	$dialog.dialog('open');
+	return;
+    }
+
     var note = { name: _('item_name').value,
 		 data : _('text').value,
-		 tag: 'normal'
+		 tag: 'normal',
+		 date: _('datepicker').value
 	       };
     if(tag){
 	note.tag = tag;
-    }
-    
-    // Ctrl+return raises a fake writeLocal,
-    // saving a note with default name and data
-    if (note.name === "Put a name here") {
-	return;
     }
     myLocalStorage.setObject(note.name, note);
     updateItemsList();
@@ -80,11 +90,18 @@ function readLocal(itemName) {
     _('note_h').firstChild.nodeValue="Edit note";
     $('#noteText').show('slow');
     _('deleteButton').disabled=false;
-    _('item_name').value=note.name;
-    _('text').value=note.data;
-        
+    _('item_name').value = note.name;
+    _('text').value = note.data;
+    
+    if(note.date){
+	_('datepicker').value = note.date;
+    }
+    else {
+	_('datepicker').value = '';
+    }
+
     var encodedData = window.btoa(JSON.stringify(note));
-    _('export').innerHTML = '<a href=\"data:text;base64,' + encodedData + '>Export note</a>';
+    _('export').innerHTML = '<a href=\"data:application/webnotes;base64,' + encodedData + '>Export note</a>';
 }
 
 function updateItemsList() {
@@ -191,7 +208,7 @@ function getExportURI() {
 	    }
 	}
 	encodedData = window.btoa(JSON.stringify(notesArray));
-	return '<a href=\"data:text;base64,' + encodedData + '>Export all notes</a>';
+	return '<a href=\"data:application/webnotes;base64,' + encodedData + '>Export all notes</a>';
     }
 }
 
