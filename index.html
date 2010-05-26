@@ -51,14 +51,14 @@
 		 style="position: absolute; top: 0; right: 0; border:0;"
 		 alt="Fork me on GitHub" /></a>
 	  <div class="item">
-	    <noscript>
-	      <p>
-		Please enable JavaScript for full functionality.
-	      </p>
+	    <noscript>Please enable JavaScript for full functionality.
 	    </noscript>
 	    <div class="sidenav">
 	      <h1>Actions keys</h1>
 	      <ul>
+		<li onclick="createList();">
+		  l - Create a list
+		</li>
 		<li onclick="showTextarea();">
 		  a - Add note
 		</li>
@@ -73,6 +73,7 @@
 		</li>
 	      </ul>
 	    </div>
+	    <div id="lists" class="items_list"><ul></ul></div>
 	    <div id="items" class="items_list"></div>
 	    <form>
 	      <h2 id='note_h'>Add note</h2>
@@ -95,6 +96,11 @@
 			 readonly="true" maxlength="10" size="10"
 			 title="Click to pick a date"
 			 />
+		</p>
+	      </div>
+	      <div>
+		<p>List:
+		  <input id="listNameField" type="text" />
 		</p>
 	      </div>
 	      <input id="deleteButton"
@@ -135,9 +141,9 @@
 	design by <a href="http://templates.arcsin.se">Arcsin</a> -
 	Best with Firefox 3.5+
 	<div>
-	<a href='http://www.pledgie.com/campaigns/9451'>
-	  <img alt='Buy me a beer :)'
-	       title='Buy me a beer :)'
+	  <a href='http://www.pledgie.com/campaigns/9451'>
+	  <img alt='Buy me a chair :)'
+	       title='Buy me a chair :)'
 	       src='http://www.pledgie.com/campaigns/9451.png?skin_name=chrome'
 	       border='0' />
 	</a>
