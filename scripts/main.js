@@ -33,7 +33,7 @@ var host = location.hostname;
 var myLocalStorage = localStorage; // firefox 3.5+
 
 function writeLocal(tag) {
-    var illegalChars = /\W/; // allow letters, numbers, and underscores
+    var illegalChars = /\W\s/; // allow letters, numbers, whitespaces and underscores
     if (illegalChars.test(_('item_name').value)){
 	var $dialog = $('<div></div>')
 	    .html('Note title can only contain letters, numbers and underscores.<br/> Don\'t use esoteric characters, please ')
@@ -45,21 +45,22 @@ function writeLocal(tag) {
 	$dialog.dialog('open');
 	return;
     }
-
-    // Allow only date as yyyy-mm-dd
-    var illegalDate = /^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/;
-    if (!illegalDate.test(_('datepicker').value)){
-	var $dialog = $('<div></div>')
-	    .html('Date must be yyyy-mm-dd.<br/> Don\'t use esoteric characters, please ')
-	    .dialog({
-			autoOpen: false,
-			title: 'Bad data'
-		    });
-	
-	$dialog.dialog('open');
-	return;
+   
+    if (_('datepicker').value){
+	// Allow only date as yyyy-mm-dd
+	var illegalDate = /^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/;
+	if (!illegalDate.test(_('datepicker').value)){
+	    var $dialog = $('<div></div>')
+		.html('Date must be yyyy-mm-dd.<br/> Don\'t use esoteric characters, please ')
+		.dialog({
+			    autoOpen: false,
+			    title: 'Bad data'
+			});
+	    
+	    $dialog.dialog('open');
+	    return;
+	}
     }
-
     var note = { name: _('item_name').value,
 		 data : _('text').value,
 		 tag: 'normal',
