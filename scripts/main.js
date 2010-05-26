@@ -33,7 +33,8 @@ var host = location.hostname;
 var myLocalStorage = localStorage; // firefox 3.5+
 
 function writeLocal(tag) {
-    var illegalChars = /\W/; // allow letters, numbers, and underscores
+    // allow letters, numbers, whitespaces, underscores, , . ' ` ! ? -
+    var illegalChars = /\w*\s\,\.\'\`\!\?\-/g; 
     if (illegalChars.test(_('item_name').value)){
 	var $dialog = $('<div></div>')
 	    .html('Note title can only contain letters, numbers and underscores.<br/> Don\'t use esoteric characters, please ')
