@@ -151,7 +151,8 @@ function resetFields(){
     $('#text').attr("value","Write some text");
 }
 
-function showTextarea(){
+function addNote(){
+    resetFields();
     $('#noteText').show('slow');
 }
 
