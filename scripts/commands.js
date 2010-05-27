@@ -1,6 +1,7 @@
 function enableCommands() {
     // Action keys
     $(document).bind('keystrokes', {keys: ['a']}, addNote);
+    $(document).bind('keystrokes', {keys: ['l']}, createList);
     $(document).bind('keystrokes', {keys: ['d']}, deleteWarning);
     $(document).bind('keystrokes', {keys: ['e']}, exportAll);
     $(document).bind('keystrokes', {keys: ['r']}, resetFields);
