@@ -20,7 +20,7 @@ WebNotes folder with:
 
 `hamen@horus:~/webnotes$ python -m SimpleHTTPServer`
 
-and point you Firefox to [127.0.0.1:8000](http://127.0.0.1:8000)
+and point your Firefox to [127.0.0.1:8000](http://127.0.0.1:8000)
 
 # Security
 It should be safe enough to use WebNotes from
