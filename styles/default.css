@@ -41,6 +41,17 @@ h2 {
     border-top: 2px solid #1B8FA9;
     width: 400px;
 }
+
+.title {
+    color: #367EA6;
+    padding-top: 6px;
+    padding-right: 6px;
+    font: bold 1.5em "Lucida Sans Unicode",sans-serif;
+    
+}
+#input_box {
+    padding-top: 10px;
+    }
 /* misc */
 .clearer {
     clear: both;

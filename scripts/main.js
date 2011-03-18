@@ -16,9 +16,6 @@
  
  Author: Ivan Morgillo < imorgillo [at] sannioglug [dot] org >
  */
-function _(id) {
-    return document.getElementById(id);
-}
 
 Storage.prototype.setObject = function(key, value) {
     this.setItem(key, JSON.stringify(value));
@@ -35,7 +32,7 @@ var myLocalStorage = localStorage; // firefox 3.5+
 function writeLocal(tag) {
     // allow letters, numbers, whitespaces, underscores, , . ' ` ! ? -
     var illegalChars = /\w*\s\,\.\'\`\!\?\-/g; 
-    if (illegalChars.test(_('item_name').value)){
+    if (illegalChars.test($('#item_name').val())){
 	var $dialog = $('<div></div>')
 	    .html('Note title can only contain letters, numbers and underscores.<br/> Don\'t use esoteric characters, please ')
 	    .dialog({
@@ -47,10 +44,10 @@ function writeLocal(tag) {
 	return;
     }
    
-    if (_('datepicker').value){
+    if ($('#datepicker').val()){
 	// Allow only date as yyyy-mm-dd
 	var illegalDate = /^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/;
-	if (!illegalDate.test(_('datepicker').value)){
+	if (!illegalDate.test($('#datepicker').val())){
 	    var $dialog = $('<div></div>')
 		.html('Date must be yyyy-mm-dd.<br/> Don\'t use esoteric characters, please ')
 		.dialog({
@@ -63,7 +60,7 @@ function writeLocal(tag) {
 	}
     }
     
-    if (illegalChars.test(_('listNameField').value)){
+    if (illegalChars.test($('#listNameField').val())){
 	var $dialog = $('<div></div>')
 	    .html('List can only contain letters, numbers and underscores.<br/> Don\'t use esoteric characters, please ')
 	    .dialog({
@@ -76,9 +73,9 @@ function writeLocal(tag) {
     }
     
     // Allow only date as yyyy-mm-dd
-    if(_('datepicker').value){
+    if($('#datepicker').val()){
 	var illegalDate = /^(19[0-9]{2}|2[0-9]{3})-(0[1-9]|1[012])-([123]0|[012][1-9]|31)$/;
-	if (!illegalDate.test(_('datepicker').value)){
+	if (!illegalDate.test($('#datepicker').val())){
 	    var $dialog = $('<div></div>')
 		.html('Date must be yyyy-mm-dd.<br/> Don\'t use esoteric characters, please ')
 		.dialog({
@@ -111,7 +108,7 @@ function writeLocal(tag) {
 }
 
 function deleteLocal() {
-    var itemName = _('item_name').value;
+    var itemName = $('#item_name').val();
     myLocalStorage.removeItem(itemName);
     updateItemsList();
     resetFields();
@@ -122,26 +119,26 @@ function deleteLocal() {
 
 function readLocal(itemName) {
     var note = myLocalStorage.getObject(itemName);
-    _('note_h').firstChild.nodeValue="Edit note";
+    $('#note_h').html("Edit note");
     $('#noteText').show('slow');
-    _('deleteButton').disabled=false;
-    _('item_name').value = note.name;
-    _('text').value = note.data;
+    $('#deleteButton').disabled = false;
+    $('#item_name').val(note.name);
+    $('#text').val(note.data);
     
     if(note.date){
-	_('datepicker').value = note.date;
+	$('#datepicker').val(note.date);
     }
     else {
-	_('datepicker').value = '';
+	$('#datepicker').val('');
     }
     if(note.mother != 'none'){
-	_('listNameField').value = note.mother;
+	$('#listNameField').val(note.mother);
     }
     else {
-	_('listNameField').value = '';
+	$('#listNameField').val('');
     }
     var encodedData = window.btoa(JSON.stringify(note));
-    _('export').innerHTML = '<a href=\"data:application/webnotes;base64,' + encodedData + '>Export note</a>';
+    $('#export').html('<a href=\"data:application/webnotes;base64,' + encodedData + '>Export note</a>');
 }
 
 function updateItemsList() {
@@ -186,7 +183,7 @@ function updateItemsList() {
 }
 
 function resetFields(){
-    _('note_h').firstChild.nodeValue="Add note";
+    $('#note_h').val("Add note");
     $('#noteText').hide();
     $('#item_name').attr("value","Put a name here");
     $('#text').attr("value","Write some text");
@@ -199,7 +196,7 @@ function addNote(){
 
 function deleteWarning(){
     if ($('#noteText').is(':visible')){
-	var item_name = _('item_name').value;
+	var item_name = $('#item_name').val();
 	var answer = confirm('Delete note: ' + item_name);
 	
 	if(answer) {
@@ -232,7 +229,6 @@ function sort_by(field, reverse, primer){
 }
 
 function setTag(tag) {
-//  alert('setting tag as: ' + tag);
     writeLocal(tag);
 }
 
