@@ -73,7 +73,6 @@
 		</li>
 	      </ul>
 	    </div>
-	    <div id="lists" class="items_list"><ul></ul></div>
 	    <div id="items" class="items_list"></div>
 	    <form>
 	      <h2 id='note_h'>Add note</h2>
@@ -152,11 +151,11 @@
       
     </div>
     <script>
-      window.onload = function() {
+      jQuery(function() {
       updateItemsList();
       resetFields();
       enableCommands();
-      }
+      });
     </script>
     </script>
     <script>

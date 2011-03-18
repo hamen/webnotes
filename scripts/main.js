@@ -91,19 +91,20 @@ function writeLocal(tag) {
 	}
     }
 
-    var note = { name: _('item_name').value,
+    var note = { name: $('#item_name').val(),
 		 type: 'note',
-		 mother: _('listNameField').value,
-		 data : _('text').value,
+		 mother: $('#listNameField').val(),
+		 data : $('#text').val(),
 		 tag: 'normal',
-		 date: _('datepicker').value
+		 date: $('#datepicker').val()
 	       };
     if(tag){
 	note.tag = tag;
     }
-    if(_('listNameField').value == ''){
+    if($('#listNameField').val() == ''){
 	note.mother = 'none';
     }
+//    alert('note.name is: ' + note.name + ' and note is: ' + note.toSource());
     myLocalStorage.setObject(note.name, note);
     updateItemsList();
     resetFields();
@@ -120,9 +121,7 @@ function deleteLocal() {
 }
 
 function readLocal(itemName) {
-    var noteName = document.getElementById(itemName).innerHTML;
-
-    var note = myLocalStorage.getObject(noteName);
+    var note = myLocalStorage.getObject(itemName);
     _('note_h').firstChild.nodeValue="Edit note";
     $('#noteText').show('slow');
     _('deleteButton').disabled=false;
@@ -171,38 +170,18 @@ function updateItemsList() {
 	notesArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
 	listsArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
 	
-	//	alert('lists: ' + listsArray.toSource() + 'notes: ' + notesArray.toSource());
-	
-	// list items
-	var listS = '<ul>';
-	for (i = 0; i < listsArray.length; i++) {
-	    var list = myLocalStorage.getObject(listsArray[i].name);
-	    listS+= '<li onclick="$(this).children(\'ul\').show();" class="item_li" id="' + list.name + '" >' + list.name +
-		'<ul id="' + list.name + '_items" class="list_items"></ul></li>';
-	}
-	_('lists').innerHTML = listS+'</ul>';
-	
-	listS += '<ul>';
+//	alert('lists: ' + listsArray.toSource() + '\nnotes: ' + notesArray.toSource());
 
-	for (i = 0; i < listsArray.length; i++) {
-	    var listItems = '';	    
-	    var list = myLocalStorage.getObject(listsArray[i].name);
-	    listS+= '<li class="item_li" id="' + list.name + '" >' + list.name + '<ul id="' + list.name + '_items"></ul></li>';
-	    
-	    for (var j = 0; j < notesArray.length; j++) {
-		var note = myLocalStorage.getObject(notesArray[j].name);
-		var tag = 'item_li_' + note.tag;
-		if (note.mother === list.name){
-		    listItems += '<li class="item_li" onclick="readLocal(\'note_'+ j + '\');" >'+
-			'<span id="note_'+ j + '" title="Click to load" class="' + tag + '">'+note.name+'</span></li>';
-		}
-	    }
-	    _(list.name +'_items').innerHTML = listItems+'</ul>';
-	}
-	$('.list_items').hide();
-    }
-    else {
-	_('items').innerHTML = '<h2>Stored items</h2><p>There is no note</p>';
+	// Create note list
+	$('#items').empty();
+	$('#items').append('<ul id="itemsUL"></ul>');
+	$(notesArray).each(function(n){
+			       var item = $('<li></li>');
+			       item.attr('onclick', 'readLocal("'+this.name+'")');
+			       item.attr('class', 'item_li_' + this.tag);
+			       item.html(this.name);
+			       $('#itemsUL').append(item);
+			   });
     }
 }
 
@@ -253,6 +232,7 @@ function sort_by(field, reverse, primer){
 }
 
 function setTag(tag) {
+//  alert('setting tag as: ' + tag);
     writeLocal(tag);
 }
 
