@@ -88,13 +88,16 @@ function writeLocal(tag) {
 	}
     }
 
-    var note = { name: $('#item_name').val(),
-		 type: 'note',
-		 mother: $('#listNameField').val(),
-		 data : $('#text').val(),
-		 tag: 'normal',
-		 date: $('#datepicker').val()
-	       };
+    var id = generateId();
+    var note = { 
+	id: id,
+	name: $('#item_name').val(),
+	type: 'note',
+	mother: $('#listNameField').val(),
+	data : $('#text').val(),
+	tag: 'normal',
+	date: $('#datepicker').val()
+    };
     if(tag){
 	note.tag = tag;
     }
@@ -102,13 +105,12 @@ function writeLocal(tag) {
 	note.mother = 'none';
     }
 //    alert('note.name is: ' + note.name + ' and note is: ' + note.toSource());
-    myLocalStorage.setObject(note.name, note);
+    myLocalStorage.setObject(note.id, note);
     updateItemsList();
     resetFields();
 }
 
-function deleteLocal() {
-    var itemName = $('#item_name').val();
+function deleteLocal(itemName) {
     myLocalStorage.removeItem(itemName);
     updateItemsList();
     resetFields();
@@ -117,12 +119,13 @@ function deleteLocal() {
     }
 }
 
-function readLocal(itemName) {
-    var note = myLocalStorage.getObject(itemName);
+function readLocal(itemID) {
+    var note = myLocalStorage.getObject(itemID);
     $('#note_h').html("Edit note");
     $('#noteText').show('slow');
     $('#deleteButton').disabled = false;
     $('#item_name').val(note.name);
+    $('#item_name').attr('noteid', note.id);
     $('#text').val(note.data);
     
     if(note.date){
@@ -145,19 +148,19 @@ function updateItemsList() {
     var arrays = getNotesNLists();
     arrays.notesArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
     arrays.listsArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
-	
-//	alert('lists: ' + listsArray.toSource() + '\nnotes: ' + notesArray.toSource());
-
-	// Create note list
-	$('#items').empty();
-	$('#items').append('<ul id="itemsUL"></ul>');
-	$(arrays.notesArray).each(function(n){
-			       var item = $('<li></li>');
-			       item.attr('onclick', 'readLocal("'+this.name+'")');
-			       item.attr('class', 'item_li_' + this.tag);
-			       item.html(this.name);
-			       $('#itemsUL').append(item);
-			   });
+    
+    //    alert('lists: ' + arrays.listsArray.toSource() + '\nnotes: ' + arrays.notesArray.toSource());
+    
+    // Create note list
+    $('#items').empty();
+    $('#items').append('<ul id="itemsUL"></ul>');
+    $(arrays.notesArray).each(function(){
+				  var item = $('<li></li>');
+				  item.attr('onclick', 'readLocal("'+this.id+'")');
+				  item.attr('class', 'item_li_' + this.tag);
+				  item.html(this.name);
+				  $('#itemsUL').append(item);
+			      });
 }
 
 function resetFields(){
@@ -178,7 +181,7 @@ function deleteWarning(){
 	var answer = confirm('Delete note: ' + item_name);
 	
 	if(answer) {
-	    deleteLocal();
+	    deleteLocal($('#item_name').attr('noteid'));
 	}
 	else {
 	    $('#noteText').hide();
@@ -304,4 +307,16 @@ function getNotesNLists(){
 	}
     }
     return arrays;
+}
+
+function generateId(){
+    var arrays = getNotesNLists();
+    var max = 0;
+    $(arrays.notesArray).each(function(){
+				  if(this.id > max)
+				  {
+				  max = this.id;    
+				  }
+			      });
+    return ++max;
 }
