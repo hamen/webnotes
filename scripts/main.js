@@ -210,7 +210,11 @@ function sort_by(field, reverse, primer){
 }
 
 function setTag(tag) {
-    writeLocal(tag);
+    var noteid = $('#item_name').attr('noteid');
+    var note = myLocalStorage.getObject(noteid);
+    note.tag = tag;
+    myLocalStorage.setObject(note.id, note);
+    updateItemsList();
 }
 
 function getExportURI() {
