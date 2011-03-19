@@ -142,44 +142,22 @@ function readLocal(itemName) {
 }
 
 function updateItemsList() {
-    var items = myLocalStorage.length;
-    var notesArray = [];
-    var listsArray = [];
-
-    if (items > 0) {
-	// Create a sorted array from unsorted myLocalStorage items
-	for (var i=0; i < items; i++) {
-	    var itemName = myLocalStorage.key(i);
-	    try {
-		var item = myLocalStorage.getObject(itemName);
-		if(item.type == 'note'){
-		    notesArray.push(item);		    
-		}
-		if(item.type == 'list'){
-		    listsArray.push(item);
-		}
-	    } catch (x) {
-		if(x.message === "JSON parse"){
-		    myLocalStorage.clear();
-		}
-	    }
-	}
-	notesArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
-	listsArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
+    var arrays = getNotesNLists();
+    arrays.notesArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
+    arrays.listsArray.sort(sort_by('name', false, function(a){return a.toUpperCase();}));
 	
 //	alert('lists: ' + listsArray.toSource() + '\nnotes: ' + notesArray.toSource());
 
 	// Create note list
 	$('#items').empty();
 	$('#items').append('<ul id="itemsUL"></ul>');
-	$(notesArray).each(function(n){
+	$(arrays.notesArray).each(function(n){
 			       var item = $('<li></li>');
 			       item.attr('onclick', 'readLocal("'+this.name+'")');
 			       item.attr('class', 'item_li_' + this.tag);
 			       item.html(this.name);
 			       $('#itemsUL').append(item);
 			   });
-    }
 }
 
 function resetFields(){
@@ -298,4 +276,32 @@ function createList() {
 	children: []
     };
     myLocalStorage.setObject(list.name, list);
+}
+
+function getNotesNLists(){
+    var items = myLocalStorage.length;
+    var arrays = {
+	notesArray: [],
+	listsArray: []
+    };
+
+    if (items > 0) {
+	for (var i=0; i < items; i++) {
+	    var itemName = myLocalStorage.key(i);
+	    try {
+		var item = myLocalStorage.getObject(itemName);
+		if(item.type == 'note'){
+		    arrays.notesArray.push(item);		    
+		}
+		if(item.type == 'list'){
+		    arrays.listsArray.push(item);
+		}
+	    } catch (x) {
+		if(x.message === "JSON parse"){
+		    myLocalStorage.clear();
+		}
+	    }
+	}
+    }
+    return arrays;
 }
