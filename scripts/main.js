@@ -226,6 +226,10 @@ function getExportURI() {
 	    var itemName = myLocalStorage.key(i);
 	    try {
 		var note = myLocalStorage.getObject(itemName);
+		if(!note.id){
+		    note.id = generateId();
+		    myLocalStorage.setObject(note.id, note);
+		}
 		notesArray.push(note);
 	    } catch (x) {
 		if(x.message === "JSON parse"){
@@ -265,7 +269,7 @@ function handleFiles(files) {
     // Save every imported notes to localStorage
     if (notesArray.length > 0) {
     notesArray.forEach(function(item) {
-			   myLocalStorage.setObject(item.name, item);
+			   myLocalStorage.setObject(item.id, item);
 		       });
     }
     else {
