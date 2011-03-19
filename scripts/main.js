@@ -265,15 +265,15 @@ function handleFiles(files) {
 	fileText = file.getAsBinary();
     }
     var notesArray = JSON.parse(fileText);
-
     // Save every imported notes to localStorage
     if (notesArray.length > 0) {
-    notesArray.forEach(function(item) {
-			   myLocalStorage.setObject(item.id, item);
+	$(notesArray).each(function() {
+			       //alert('id is: ' + this.id + ' and note is: ' + this.toSource());
+			       myLocalStorage.setObject(this.id, this);
 		       });
     }
     else {
-	myLocalStorage.setObject(notesArray.name, notesArray);
+	myLocalStorage.setObject(notesArray.id, notesArray);
     }
     location.reload(true);
 }
@@ -298,14 +298,19 @@ function getNotesNLists(){
 
     if (items > 0) {
 	for (var i=0; i < items; i++) {
-	    var itemName = myLocalStorage.key(i);
+	    var itemKey = myLocalStorage.key(i);
 	    try {
-		var item = myLocalStorage.getObject(itemName);
-		if(item.type == 'note'){
-		    arrays.notesArray.push(item);		    
-		}
+		var item = myLocalStorage.getObject(itemKey);
+
 		if(item.type == 'list'){
 		    arrays.listsArray.push(item);
+		}
+		else{
+		    item.type = 'note';
+		    if(!item.id){
+			item.id = generateId();
+		    }
+		    arrays.notesArray.push(item);	
 		}
 	    } catch (x) {
 		if(x.message === "JSON parse"){
